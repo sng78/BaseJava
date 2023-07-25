@@ -1,8 +1,13 @@
+package io.github.sng78.webapp;
+
+import io.github.sng78.webapp.model.Resume;
+import io.github.sng78.webapp.storage.ArrayStorage;
+
 /**
- * Test for your ArrayStorage implementation
+ * Test for your io.github.sng78.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    public static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume();
@@ -21,6 +26,9 @@ public class MainTestArrayStorage {
 
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
+        System.out.println("\nUpdate resume: " + r2);
+        ARRAY_STORAGE.update(r2);
+
         printAll();
         ARRAY_STORAGE.delete(r1.uuid);
         printAll();
@@ -28,6 +36,7 @@ public class MainTestArrayStorage {
         printAll();
 
         System.out.println("Size: " + ARRAY_STORAGE.size());
+
     }
 
     static void printAll() {

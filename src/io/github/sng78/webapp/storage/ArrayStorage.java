@@ -8,13 +8,12 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private final Resume[] storage = new Resume[10000];
+    public static final int STORAGE_CAPACITY = 10000;
+    private final Resume[] storage = new Resume[STORAGE_CAPACITY];
     private int numberResumes;
 
     public void clear() {
-        for (int i = 0; i < numberResumes; i++) {
-            storage[i] = null;
-        }
+        Arrays.fill(storage, 0, numberResumes, null);
         numberResumes = 0;
     }
 
@@ -22,26 +21,29 @@ public class ArrayStorage {
         int index = findIndex(resume.uuid);
         if (index != -1) {
             storage[index] = resume;
+        } else {
+            printNoResume(resume.uuid);
         }
     }
 
     public void save(Resume resume) {
-        if (findIndex(resume.uuid) == -1) {
-            if (numberResumes < storage.length) {
-                System.out.println("Добавляю новое резюме");
-                storage[numberResumes] = resume;
-                numberResumes++;
-            } else {
-                System.out.printf("ОШИБКА! Резюме %s не добавлено, превышен лимит!\n", resume);
-            }
+        if (numberResumes >= storage.length) {
+            System.out.printf("ОШИБКА! РЕЗЮМЕ %s НЕ ДОБАВЛЕНО, ПРЕВЫШЕН ЛИМИТ!\n", resume);
+        } else if (findIndex(resume.uuid) != -1) {
+            System.out.printf("ОШИБКА! РЕЗЮМЕ %s УЖЕ ЕСТЬ В БАЗЕ ДАННЫХ!\n", resume);
         } else {
-            System.out.printf("ОШИБКА! Резюме %s уже есть в базе данных!\n", resume);
+            storage[numberResumes] = resume;
+            numberResumes++;
         }
     }
 
     public Resume get(String uuid) {
         int index = findIndex(uuid);
-        return index != -1 ? storage[index] : null;
+        if (index != -1) {
+            return storage[index];
+        }
+        printNoResume(uuid);
+        return null;
     }
 
     public void delete(String uuid) {
@@ -50,6 +52,8 @@ public class ArrayStorage {
             storage[index] = storage[numberResumes - 1];
             storage[numberResumes - 1] = null;
             numberResumes--;
+        } else {
+            printNoResume(uuid);
         }
     }
 
@@ -70,7 +74,10 @@ public class ArrayStorage {
                 return i;
             }
         }
-        System.out.printf("ОШИБКА! Резюме %s отсутствует в базе данных!\n", uuid);
         return -1;
+    }
+
+    private void printNoResume(String uuid) {
+        System.out.printf("ОШИБКА! Резюме %s отсутствует в базе данных!\n", uuid);
     }
 }

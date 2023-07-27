@@ -8,7 +8,7 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    public static final int STORAGE_CAPACITY = 10000;
+    private static final int STORAGE_CAPACITY = 10000;
     private final Resume[] storage = new Resume[STORAGE_CAPACITY];
     private int numberResumes;
 
@@ -27,7 +27,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (numberResumes >= storage.length) {
+        if (numberResumes == STORAGE_CAPACITY) {
             System.out.printf("ОШИБКА! РЕЗЮМЕ %s НЕ ДОБАВЛЕНО, ПРЕВЫШЕН ЛИМИТ!\n", resume);
         } else if (findIndex(resume.uuid) != -1) {
             System.out.printf("ОШИБКА! РЕЗЮМЕ %s УЖЕ ЕСТЬ В БАЗЕ ДАННЫХ!\n", resume);
@@ -78,6 +78,6 @@ public class ArrayStorage {
     }
 
     private void printNoResume(String uuid) {
-        System.out.printf("ОШИБКА! Резюме %s отсутствует в базе данных!\n", uuid);
+        System.out.printf("ОШИБКА! РЕЗЮМЕ %s ОТСУТСТВУЕТ В БАЗЕ ДАННЫХ!\n", uuid);
     }
 }

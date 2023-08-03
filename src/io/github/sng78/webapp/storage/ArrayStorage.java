@@ -4,14 +4,13 @@ import io.github.sng78.webapp.model.Resume;
 
 public class ArrayStorage extends AbstractArrayStorage {
     @Override
-    protected void deleteDifferPart(int index) {
-        storage[index] = storage[numberResumes - 1];
-        storage[numberResumes - 1] = null;
+    protected void insertResume(Resume resume, int index) {
+        storage[numberResumes] = resume;
     }
 
     @Override
-    protected void saveDifferPart(Resume resume) {
-        storage[numberResumes] = resume;
+    protected void removeResume(int index) {
+        storage[index] = storage[numberResumes - 1];
     }
 
     @Override

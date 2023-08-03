@@ -27,17 +27,17 @@ public abstract class AbstractArrayStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
+        int index = getIndex(resume.getUuid());
         if (numberResumes == STORAGE_CAPACITY) {
             System.out.printf("ОШИБКА! РЕЗЮМЕ %s НЕ ДОБАВЛЕНО, ПРЕВЫШЕН ЛИМИТ!\n", resume);
-        } else if (getIndex(resume.getUuid()) >= 0) {
+        } else if (index >= 0) {
             System.out.printf("ОШИБКА! РЕЗЮМЕ %s УЖЕ ЕСТЬ В БАЗЕ ДАННЫХ!\n", resume);
         } else {
-            saveDifferPart(resume);
+            index = index * -1 - 1;
+            insertResume(resume, index);
             numberResumes++;
         }
     }
-
-    protected abstract void saveDifferPart(Resume resume);
 
     @Override
     public Resume get(String uuid) {
@@ -53,14 +53,13 @@ public abstract class AbstractArrayStorage implements Storage {
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {
-            deleteDifferPart(index);
+            removeResume(index);
+            storage[numberResumes - 1] = null;
             numberResumes--;
         } else {
             printNoResume(uuid);
         }
     }
-
-    protected abstract void deleteDifferPart(int index);
 
     @Override
     public Resume[] getAll() {
@@ -72,9 +71,13 @@ public abstract class AbstractArrayStorage implements Storage {
         return numberResumes;
     }
 
-    protected abstract int getIndex(String uuid);
-
     protected void printNoResume(String uuid) {
         System.out.printf("ОШИБКА! РЕЗЮМЕ %s ОТСУТСТВУЕТ В БАЗЕ ДАННЫХ!\n", uuid);
     }
+
+    protected abstract int getIndex(String uuid);
+
+    protected abstract void insertResume(Resume resume, int index);
+
+    protected abstract void removeResume(int index);
 }

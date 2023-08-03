@@ -6,17 +6,14 @@ import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
-    protected void deleteDifferPart(int index) {
-        System.arraycopy(storage, index + 1, storage, index, numberResumes - 1 - index);
-        storage[numberResumes - 1] = null;
+    protected void insertResume(Resume resume, int index) {
+        System.arraycopy(storage, index, storage, index + 1, numberResumes - index);
+        storage[index] = resume;
     }
 
     @Override
-    protected void saveDifferPart(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        index = index * -1 - 1;
-        System.arraycopy(storage, index, storage, index + 1, numberResumes - index);
-        storage[index] = resume;
+    protected void removeResume(int index) {
+        System.arraycopy(storage, index + 1, storage, index, numberResumes - 1 - index);
     }
 
     @Override

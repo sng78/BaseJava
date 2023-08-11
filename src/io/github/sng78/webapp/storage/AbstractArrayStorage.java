@@ -1,5 +1,8 @@
 package io.github.sng78.webapp.storage;
 
+import io.github.sng78.webapp.exception.ExistStorageException;
+import io.github.sng78.webapp.exception.NotExistStorageException;
+import io.github.sng78.webapp.exception.StorageException;
 import io.github.sng78.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -21,7 +24,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             storage[index] = resume;
         } else {
-            printNoResume(resume.getUuid());
+            throw new NotExistStorageException(resume.getUuid());
         }
     }
 
@@ -29,9 +32,9 @@ public abstract class AbstractArrayStorage implements Storage {
     public final void save(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (numberResumes == STORAGE_CAPACITY) {
-            System.out.printf("ОШИБКА! РЕЗЮМЕ %s НЕ ДОБАВЛЕНО, ПРЕВЫШЕН ЛИМИТ!\n", resume);
+            throw new StorageException("Storage overflow", resume.getUuid());
         } else if (index >= 0) {
-            System.out.printf("ОШИБКА! РЕЗЮМЕ %s УЖЕ ЕСТЬ В БАЗЕ ДАННЫХ!\n", resume);
+            throw new ExistStorageException(resume.getUuid());
         } else {
             index = index * -1 - 1;
             insertResume(resume, index);
@@ -45,8 +48,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             return storage[index];
         }
-        printNoResume(uuid);
-        return null;
+        throw new NotExistStorageException(uuid);
     }
 
     @Override
@@ -57,7 +59,7 @@ public abstract class AbstractArrayStorage implements Storage {
             storage[numberResumes - 1] = null;
             numberResumes--;
         } else {
-            printNoResume(uuid);
+            throw new NotExistStorageException(uuid);
         }
     }
 
@@ -69,10 +71,6 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public int size() {
         return numberResumes;
-    }
-
-    protected void printNoResume(String uuid) {
-        System.out.printf("ОШИБКА! РЕЗЮМЕ %s ОТСУТСТВУЕТ В БАЗЕ ДАННЫХ!\n", uuid);
     }
 
     protected abstract int getIndex(String uuid);

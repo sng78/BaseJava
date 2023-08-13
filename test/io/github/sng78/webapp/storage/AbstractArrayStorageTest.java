@@ -16,9 +16,20 @@ public abstract class AbstractArrayStorageTest {
     private static final Resume RESUME_2 = new Resume(UUID_2);
     private static final String UUID_3 = "uuid3";
     private static final Resume RESUME_3 = new Resume(UUID_3);
+    private static final String UUID_4 = "uuid4";
+    private static final Resume RESUME_4 = new Resume(UUID_4);
+    private static final String UUID_NOT_EXIST = "dummy";
 
     public AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
+    }
+
+    protected void assertSize(int size) {
+        Assertions.assertEquals(size, storage.size());
+    }
+
+    protected void assertGet(Resume resume) {
+        Assertions.assertEquals(resume, storage.get(resume.getUuid()));
     }
 
     @BeforeEach
@@ -33,64 +44,77 @@ public abstract class AbstractArrayStorageTest {
     @DisplayName("Тест метода clear")
     public void clear() {
         storage.clear();
-        Assertions.assertEquals(0, storage.size());
+        assertSize(0);
+        Assertions.assertArrayEquals(new Resume[0], storage.getAll());
     }
 
     @Test
     @DisplayName("Тест метода update")
     public void update() {
         storage.update(RESUME_2);
-        Assertions.assertEquals(RESUME_2, storage.get(UUID_2));
+        Assertions.assertSame(RESUME_2, storage.get(UUID_2));
+    }
+
+    @Test
+    @DisplayName("Тест на отсутствие обновления")
+    public void updateNotExist() {
+        Assertions.assertThrows(NotExistStorageException.class, () -> storage.get(UUID_NOT_EXIST));
     }
 
     @Test
     @DisplayName("Тест метода save")
     public void save() {
-        storage.save(new Resume("uuid4"));
-        Assertions.assertEquals(4, storage.size());
+        storage.save(RESUME_4);
+        assertSize(4);
+        assertGet(RESUME_4);
     }
 
     @Test
     @DisplayName("Тест метода get")
     public void get() {
-        Assertions.assertEquals(RESUME_1, storage.get(UUID_1));
-        Assertions.assertEquals(RESUME_2, storage.get(UUID_2));
-        Assertions.assertEquals(RESUME_3, storage.get(UUID_3));
+        assertGet(RESUME_1);
+        assertGet(RESUME_2);
+        assertGet(RESUME_3);
     }
 
     @Test
     @DisplayName("Тест на отсутствие резюме")
     public void getNotExist() {
-        Assertions.assertThrows(NotExistStorageException.class, () -> storage.get("dummy"));
+        Assertions.assertThrows(NotExistStorageException.class, () -> storage.get(UUID_NOT_EXIST));
     }
 
     @Test
     @DisplayName("Тест метода delete")
     public void delete() {
         storage.delete(UUID_2);
-        Assertions.assertEquals(2, storage.size());
+        assertSize(2);
+        Assertions.assertThrows(NotExistStorageException.class, () -> storage.get(UUID_2));
+    }
+
+    @Test
+    @DisplayName("Тест на удаление несуществующего резюме")
+    public void deleteNotExist() {
+        Assertions.assertThrows(NotExistStorageException.class, () -> storage.delete(UUID_NOT_EXIST));
     }
 
     @Test
     @DisplayName("Тест метода getAll")
     public void getAll() {
-        Resume[] resumes = storage.getAll();
-        Assertions.assertEquals(UUID_1, resumes[0].toString());
-        Assertions.assertEquals(UUID_2, resumes[1].toString());
-        Assertions.assertNotEquals("dummy", resumes[2].toString());
+        Resume[] expected = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
+        Assertions.assertArrayEquals(expected, storage.getAll());
     }
 
     @Test
     @DisplayName("Тест метода size")
     public void size() {
-        Assertions.assertEquals(3, storage.size());
+        assertSize(3);
     }
 
     @Test
     @DisplayName("Тест на переполнение хранилища")
     public void overflow() {
         storage.clear();
-        try{
+        try {
             for (int i = 0; i < AbstractArrayStorage.STORAGE_CAPACITY; i++) {
                 storage.save(new Resume("" + i));
             }

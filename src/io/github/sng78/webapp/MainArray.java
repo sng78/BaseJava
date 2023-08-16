@@ -1,7 +1,7 @@
 package io.github.sng78.webapp;
 
 import io.github.sng78.webapp.model.Resume;
-import io.github.sng78.webapp.storage.SortedArrayStorage;
+import io.github.sng78.webapp.storage.ArrayStorage;
 import io.github.sng78.webapp.storage.Storage;
 
 import java.io.BufferedReader;
@@ -13,8 +13,8 @@ import java.io.InputStreamReader;
  * (just run, no need to understand)
  */
 public class MainArray {
-//    public static final Storage ARRAY_STORAGE = new ArrayStorage();
-    public static final Storage ARRAY_STORAGE = new SortedArrayStorage();
+    public static final Storage ARRAY_STORAGE = new ArrayStorage();
+//    public static final Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

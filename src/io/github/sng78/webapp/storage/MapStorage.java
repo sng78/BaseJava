@@ -2,57 +2,53 @@ package io.github.sng78.webapp.storage;
 
 import io.github.sng78.webapp.model.Resume;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ListStorage extends AbstractStorage {
-    protected final List<Resume> listStorage = new ArrayList<>();
+public class MapStorage extends AbstractStorage {
+    protected final Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
     public void clear() {
-        listStorage.clear();
+        mapStorage.clear();
     }
 
     @Override
     protected void updateResume(Resume resume, Object searchKey) {
-        listStorage.set((Integer) searchKey, resume);
+        saveResume(resume, searchKey);
     }
 
     @Override
     protected void saveResume(Resume resume, Object searchKey) {
-        listStorage.add(resume);
+        mapStorage.put(resume.getUuid(), resume);
     }
 
     @Override
     protected Resume getResume(Object searchKey) {
-        return listStorage.get((Integer) searchKey);
+        return mapStorage.get((String) searchKey);
     }
 
     @Override
     protected void deleteResume(Object searchKey) {
-        listStorage.remove((int) searchKey);
+        mapStorage.remove((String) searchKey);
     }
 
     @Override
     public Resume[] getAll() {
-        return listStorage.toArray(new Resume[0]);
+        return mapStorage.values().toArray(new Resume[0]);
     }
 
     @Override
     public int size() {
-        return listStorage.size();
+        return mapStorage.size();
     }
 
     @Override
     protected Object getSearchKey(String uuid) {
-        for (int i = 0; i < listStorage.size(); i++) {
-            if (listStorage.get(i).getUuid().equals(uuid)) {
-                return i;
-            }
-        }
-        return null;
+        return mapStorage.containsKey(uuid) ? uuid : null;
     }
 
+    @Override
     protected boolean isExist(Object index) {
         return index != null;
     }

@@ -4,17 +4,17 @@ import io.github.sng78.webapp.model.Resume;
 
 public class ArrayStorage extends AbstractArrayStorage {
     @Override
-    protected void insertResume(Resume resume, int searchUuid) {
+    protected void insertResume(Resume resume, Object searchKey) {
         storage[numberResumes] = resume;
     }
 
     @Override
-    protected void removeResume(int searchUuid) {
-        storage[searchUuid] = storage[numberResumes - 1];
+    protected void removeResume(Object searchKey) {
+        storage[(Integer) searchKey] = storage[numberResumes - 1];
     }
 
     @Override
-    protected int getSearchUuid(String uuid) {
+    protected Object getSearchKey(String uuid) {
         for (int i = 0; i < numberResumes; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;

@@ -3,9 +3,10 @@ package io.github.sng78.webapp.storage;
 import io.github.sng78.webapp.model.Resume;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class MapStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
     protected final Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
@@ -39,17 +40,22 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
+    public List<Resume> getAllSorted() {
+        return null;
+    }
+
+    @Override
     public int size() {
         return mapStorage.size();
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
-        return mapStorage.containsKey(uuid) ? uuid : null;
+    protected String getSearchKey(String uuid) {
+        return uuid;
     }
 
     @Override
-    protected boolean isExist(Object index) {
-        return index != null;
+    protected boolean isExist(Object uuid) {
+        return mapStorage.containsKey((String) uuid);
     }
 }

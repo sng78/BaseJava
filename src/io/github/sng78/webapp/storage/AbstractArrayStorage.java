@@ -4,6 +4,7 @@ import io.github.sng78.webapp.exception.StorageException;
 import io.github.sng78.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_CAPACITY = 10000;
@@ -46,6 +47,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     public Resume[] getAll() {
         return Arrays.copyOf(storage, numberResumes);
+    }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        return Arrays.asList(storage);
     }
 
     @Override

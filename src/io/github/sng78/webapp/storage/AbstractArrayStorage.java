@@ -38,20 +38,15 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void deleteResume(Object searchKey) {
-        removeResume(searchKey);
-        storage[numberResumes - 1] = null;
-        numberResumes--;
-    }
-
-    @Override
     public Resume[] getAll() {
         return Arrays.copyOf(storage, numberResumes);
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        return Arrays.asList(storage);
+    protected void deleteResume(Object searchKey) {
+        removeResume(searchKey);
+        storage[numberResumes - 1] = null;
+        numberResumes--;
     }
 
     @Override
@@ -62,6 +57,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     protected boolean isExist(Object index) {
         return (Integer) index >= 0;
+    }
+
+    @Override
+    protected List<Resume> convertStorageToList() {
+        return Arrays.asList(Arrays.copyOf(storage, numberResumes));
     }
 
     protected abstract void insertResume(Resume resume, Object searchKey);

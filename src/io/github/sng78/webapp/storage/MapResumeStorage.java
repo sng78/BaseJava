@@ -2,9 +2,7 @@ package io.github.sng78.webapp.storage;
 
 import io.github.sng78.webapp.model.Resume;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MapResumeStorage extends AbstractStorage {
     protected final Map<String, Resume> mapStorage = new HashMap<>();
@@ -40,11 +38,6 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        return null;
-    }
-
-    @Override
     public int size() {
         return mapStorage.size();
     }
@@ -57,5 +50,10 @@ public class MapResumeStorage extends AbstractStorage {
     @Override
     protected boolean isExist(Object resume) {
         return resume != null;
+    }
+
+    @Override
+    protected List<Resume> convertStorageToList() {
+        return new ArrayList<>(mapStorage.values());
     }
 }

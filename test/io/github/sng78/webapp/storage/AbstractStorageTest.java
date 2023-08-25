@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractStorageTest {
     private final Storage storage;
@@ -106,6 +107,13 @@ public abstract class AbstractStorageTest {
         Resume[] actual = storage.getAll();
         Arrays.sort(actual);
         Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Тест метода getAllSorted")
+    public void getAllSorted() {
+        List<Resume> expected = storage.getAllSorted();
+        Assertions.assertEquals(expected, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
     }
 
     @Test

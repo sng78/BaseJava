@@ -3,8 +3,14 @@ package io.github.sng78.webapp.storage;
 import io.github.sng78.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
+    @Override
+    public List<Resume> getAllSorted() {
+        return Arrays.asList(Arrays.copyOf(storage, numberResumes));
+    }
+
     @Override
     protected void insertResume(Resume resume, Object searchKey) {
         searchKey = (Integer) searchKey * -1 - 1;

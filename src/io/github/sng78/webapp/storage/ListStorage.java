@@ -39,11 +39,6 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        return listStorage;
-    }
-
-    @Override
     public int size() {
         return listStorage.size();
     }
@@ -60,5 +55,10 @@ public class ListStorage extends AbstractStorage {
 
     protected boolean isExist(Object index) {
         return index != null;
+    }
+
+    @Override
+    protected List<Resume> convertStorageToList() {
+        return listStorage;
     }
 }

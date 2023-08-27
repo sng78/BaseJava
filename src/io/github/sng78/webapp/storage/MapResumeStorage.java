@@ -5,11 +5,11 @@ import io.github.sng78.webapp.model.Resume;
 import java.util.*;
 
 public class MapResumeStorage extends AbstractStorage {
-    protected final Map<String, Resume> mapStorage = new HashMap<>();
+    protected final Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public void clear() {
-        mapStorage.clear();
+        storage.clear();
     }
 
     @Override
@@ -19,7 +19,7 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected void saveResume(Resume resume, Object searchKey) {
-        mapStorage.put(resume.getUuid(), resume);
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
@@ -29,22 +29,22 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected void deleteResume(Object searchKey) {
-        mapStorage.remove(((Resume) searchKey).getUuid());
+        storage.remove(((Resume) searchKey).getUuid());
     }
 
     @Override
     public Resume[] getAll() {
-        return mapStorage.values().toArray(new Resume[0]);
+        return storage.values().toArray(new Resume[0]);
     }
 
     @Override
     public int size() {
-        return mapStorage.size();
+        return storage.size();
     }
 
     @Override
     protected Resume getSearchKey(String uuid) {
-        return mapStorage.get(uuid);
+        return storage.get(uuid);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    protected List<Resume> convertStorageToList() {
-        return new ArrayList<>(mapStorage.values());
+    protected List<Resume> getStorageAsList() {
+        return new ArrayList<>(storage.values());
     }
 }

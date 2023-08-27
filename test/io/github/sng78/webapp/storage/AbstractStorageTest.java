@@ -1,7 +1,6 @@
 package io.github.sng78.webapp.storage;
 
 import io.github.sng78.webapp.exception.NotExistStorageException;
-import io.github.sng78.webapp.exception.StorageException;
 import io.github.sng78.webapp.model.Resume;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
-    private final Storage storage;
+    protected final Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1 = new Resume(UUID_1, "name1");
     private static final String UUID_2 = "uuid2";
@@ -121,19 +120,18 @@ public abstract class AbstractStorageTest {
     public void size() {
         assertSize(3);
     }
-
-    @Test
-    @DisplayName("Тест на переполнение хранилища")
-    public void overflow() {
-        storage.clear();
-        try {
-            for (int i = 0; i < AbstractArrayStorage.STORAGE_CAPACITY; i++) {
-                storage.save(new Resume("" + i, "New name"));
-            }
-        } catch (Exception e) {
-            Assertions.fail("storage overflow occurred ahead of time - " + e);
-        }
-
-        Assertions.assertThrows(StorageException.class, () -> storage.save(new Resume("New name")));
-    }
+//
+//    @Test
+//    @DisplayName("Тест на переполнение хранилища")
+//    public void overflow() {
+//        storage.clear();
+//        try {
+//            for (int i = 0; i < AbstractArrayStorage.STORAGE_CAPACITY; i++) {
+//                storage.save(new Resume("" + i, "New name"));
+//            }
+//        } catch (Exception e) {
+//            Assertions.fail("storage overflow occurred ahead of time - " + e);
+//        }
+//        Assertions.assertThrows(StorageException.class, () -> storage.save(new Resume("New name")));
+//    }
 }

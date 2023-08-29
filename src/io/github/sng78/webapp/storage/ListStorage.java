@@ -5,7 +5,7 @@ import io.github.sng78.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage {
+public class ListStorage extends AbstractStorage<Integer> {
     protected final List<Resume> listStorage = new ArrayList<>();
 
     @Override
@@ -14,23 +14,23 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateResume(Resume resume, Object searchKey) {
-        listStorage.set((Integer) searchKey, resume);
+    protected void updateResume(Resume resume, Integer searchKey) {
+        listStorage.set(searchKey, resume);
     }
 
     @Override
-    protected void saveResume(Resume resume, Object searchKey) {
+    protected void saveResume(Resume resume, Integer searchKey) {
         listStorage.add(resume);
     }
 
     @Override
-    protected Resume getResume(Object searchKey) {
-        return listStorage.get((Integer) searchKey);
+    protected Resume getResume(Integer searchKey) {
+        return listStorage.get(searchKey);
     }
 
     @Override
-    protected void deleteResume(Object searchKey) {
-        listStorage.remove((int) searchKey);
+    protected void deleteResume(Integer searchKey) {
+        listStorage.remove(searchKey.intValue());
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < listStorage.size(); i++) {
             if (listStorage.get(i).getUuid().equals(uuid)) {
                 return i;
@@ -53,7 +53,7 @@ public class ListStorage extends AbstractStorage {
         return null;
     }
 
-    protected boolean isExist(Object index) {
+    protected boolean isExist(Integer index) {
         return index != null;
     }
 

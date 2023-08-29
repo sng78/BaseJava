@@ -4,7 +4,7 @@ import io.github.sng78.webapp.model.Resume;
 
 import java.util.*;
 
-public class MapResumeStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage<Resume> {
     protected final Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -13,23 +13,23 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateResume(Resume resume, Object searchKey) {
+    protected void updateResume(Resume resume, Resume searchKey) {
         saveResume(resume, searchKey);
     }
 
     @Override
-    protected void saveResume(Resume resume, Object searchKey) {
+    protected void saveResume(Resume resume, Resume searchKey) {
         storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected Resume getResume(Object searchKey) {
-        return (Resume) searchKey;
+    protected Resume getResume(Resume searchKey) {
+        return searchKey;
     }
 
     @Override
-    protected void deleteResume(Object searchKey) {
-        storage.remove(((Resume) searchKey).getUuid());
+    protected void deleteResume(Resume searchKey) {
+        storage.remove(searchKey.getUuid());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object resume) {
+    protected boolean isExist(Resume resume) {
         return resume != null;
     }
 

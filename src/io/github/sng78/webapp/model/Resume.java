@@ -1,16 +1,12 @@
 package io.github.sng78.webapp.model;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
-/**
- * Initial resume class
- */
 public class Resume implements Comparable<Resume> {
-
-    // Unique identifier
     private final String uuid;
     private final String fullName;
+    private final Map<ContactType, String> contacts = new TreeMap<>();
+    private final Map<SectionType, Section> sections = new TreeMap<>();
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -27,6 +23,22 @@ public class Resume implements Comparable<Resume> {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public void setContact(ContactType contactType, String contact) {
+        contacts.put(contactType, contact);
+    }
+
+    public Map<SectionType, Section> getSections() {
+        return sections;
+    }
+
+    public void setSection(SectionType sectionType, Section section) {
+        sections.put(sectionType, section);
     }
 
     @Override

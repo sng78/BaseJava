@@ -1,10 +1,10 @@
 package io.github.sng78.webapp.model;
 
 public enum SectionType {
-    PERSONAL("Личные качества"),
     OBJECTIVE("Позиция"),
+    PERSONAL("Личные качества"),
     ACHIEVEMENT("Достижения"),
-    QUALIFICATIONS("Квалификация"),
+    SKILLS("Навыки"),
     EXPERIENCE("Опыт работы"),
     EDUCATION("Образование");
 

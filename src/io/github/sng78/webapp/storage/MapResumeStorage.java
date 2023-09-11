@@ -33,11 +33,6 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    public Resume[] getAll() {
-        return storage.values().toArray(new Resume[0]);
-    }
-
-    @Override
     public int size() {
         return storage.size();
     }

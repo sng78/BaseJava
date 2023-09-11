@@ -1,19 +1,17 @@
 package io.github.sng78.webapp.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Organization {
     private final String name;
     private final String website;
     private final List<Period> periods;
 
-    public Organization(String name, String website, Period period) {
+    public Organization(String name, String website, Period... period) {
         this.name = name;
         this.website = website;
         periods = new ArrayList<>();
-        periods.add(period);
+        Collections.addAll(periods, period);
     }
 
     public String getName() {

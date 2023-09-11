@@ -10,16 +10,18 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static io.github.sng78.webapp.ResumeTestData.addResume;
+
 public abstract class AbstractStorageTest {
     protected final Storage storage;
     private static final String UUID_1 = "uuid1";
-    private static final Resume RESUME_1 = new Resume(UUID_1, "name1");
+    private static final Resume RESUME_1 = addResume(UUID_1, "name1");
     private static final String UUID_2 = "uuid2";
-    private static final Resume RESUME_2 = new Resume(UUID_2, "name2");
+    private static final Resume RESUME_2 = addResume(UUID_2, "name2");
     private static final String UUID_3 = "uuid3";
-    private static final Resume RESUME_3 = new Resume(UUID_3, "name3");
+    private static final Resume RESUME_3 = addResume(UUID_3, "name3");
     private static final String UUID_4 = "uuid4";
-    private static final Resume RESUME_4 = new Resume(UUID_4, "name4");
+    private static final Resume RESUME_4 = addResume(UUID_4, "name4");
     private static final String UUID_NOT_EXIST = "dummy";
 
     public AbstractStorageTest(Storage storage) {
@@ -47,7 +49,7 @@ public abstract class AbstractStorageTest {
     public void clear() {
         storage.clear();
         assertSize(0);
-        Assertions.assertArrayEquals(new Resume[0], storage.getAll());
+        Assertions.assertArrayEquals(new Resume[0], storage.getAllSorted().toArray(new Resume[0]));
     }
 
     @Test
@@ -100,15 +102,6 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    @DisplayName("Тест метода getAll")
-    public void getAll() {
-        Resume[] expected = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
-        Resume[] actual = storage.getAll();
-        Arrays.sort(actual);
-        Assertions.assertArrayEquals(expected, actual);
-    }
-
-    @Test
     @DisplayName("Тест метода getAllSorted")
     public void getAllSorted() {
         List<Resume> expected = storage.getAllSorted();
@@ -120,18 +113,4 @@ public abstract class AbstractStorageTest {
     public void size() {
         assertSize(3);
     }
-//
-//    @Test
-//    @DisplayName("Тест на переполнение хранилища")
-//    public void overflow() {
-//        storage.clear();
-//        try {
-//            for (int i = 0; i < AbstractArrayStorage.STORAGE_CAPACITY; i++) {
-//                storage.save(new Resume("" + i, "New name"));
-//            }
-//        } catch (Exception e) {
-//            Assertions.fail("storage overflow occurred ahead of time - " + e);
-//        }
-//        Assertions.assertThrows(StorageException.class, () -> storage.save(new Resume("New name")));
-//    }
 }

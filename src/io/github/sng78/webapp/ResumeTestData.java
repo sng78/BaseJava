@@ -9,8 +9,17 @@ import java.util.Map;
 
 public class ResumeTestData {
     public static void main(String[] args) {
-        Resume resume = new Resume("Григорий Кислин");
+        String uuid1 = "uuid1";
+        String fullName1 = "Григорий Кислин";
+        Resume resume = addResume(uuid1, fullName1);
 
+        printFullName(resume);
+        printContacts(resume);
+        printAllSections(resume);
+    }
+
+    public static Resume addResume(String uuid, String fullName) {
+        Resume resume = new Resume(uuid, fullName);
         fillContacts(resume);
         fillObjectiveSection(resume);
         fillPersonalSection(resume);
@@ -18,10 +27,7 @@ public class ResumeTestData {
         fillSkillsSection(resume);
         fillExperienceSection(resume);
         fillEducationSection(resume);
-
-        printFullName(resume);
-        printContacts(resume);
-        printAllSections(resume);
+        return resume;
     }
 
     private static void fillContacts(Resume resume) {
@@ -224,8 +230,7 @@ public class ResumeTestData {
         educationOrganizations.add(new Organization("Alcatel", "http://www.alcatel.ru/", period12));
         educationOrganizations.add(new Organization("Санкт-Петербургский национальный " +
                 "исследовательский университет информационных технологий, механики и оптики",
-                "http://www.ifmo.ru/", period13));
-        educationOrganizations.get(4).addPeriod(period14);
+                "http://www.ifmo.ru/", period13, period14));
         educationOrganizations.add(new Organization("Заочная физико-техническая школа при МФТИ",
                 "https://mipt.ru/", period15));
         Section education = new OrganizationSection(educationOrganizations);

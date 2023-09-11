@@ -38,11 +38,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, numberResumes);
-    }
-
-    @Override
     protected void deleteResume(Integer searchKey) {
         removeResume(searchKey);
         storage[numberResumes - 1] = null;

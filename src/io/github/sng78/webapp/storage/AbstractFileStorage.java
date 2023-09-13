@@ -35,8 +35,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void saveResume(Resume resume, File file) {
         try {
-            boolean created = file.createNewFile();
-            if (!created) {
+            if (!file.createNewFile()) {
                 throw new StorageException("File already exists: ", file.getName());
             } else {
                 writeResume(resume, file);
@@ -57,8 +56,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void deleteResume(File file) {
-        boolean deleted = file.delete();
-        if (!deleted) {
+        if (!file.delete()) {
             throw new StorageException("Cannot delete file: ", file.getName());
         }
     }
@@ -77,11 +75,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected List<Resume> getStorageAsList() {
         List<Resume> resumes = new ArrayList<>();
         for (File file : getListFiles()) {
-            try {
-                resumes.add(readResume(file));
-            } catch (IOException e) {
-                throw new StorageException("IO error ", file.getName() + " ", e);
-            }
+            resumes.add(getResume(file));
         }
         return resumes;
     }
@@ -100,7 +94,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     private File[] getListFiles() {
-        return directory.listFiles();
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("Cannot read directory: " + directory.getName(), null);
+        }
+        return files;
     }
 
     protected abstract Resume readResume(File file) throws IOException;

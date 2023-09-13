@@ -11,14 +11,14 @@ public class ResumeTestData {
     public static void main(String[] args) {
         String uuid1 = "uuid1";
         String fullName1 = "Григорий Кислин";
-        Resume resume = addResume(uuid1, fullName1);
+        Resume resume = createResume(uuid1, fullName1);
 
         printFullName(resume);
         printContacts(resume);
         printAllSections(resume);
     }
 
-    public static Resume addResume(String uuid, String fullName) {
+    public static Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
         fillContacts(resume);
         fillObjectiveSection(resume);

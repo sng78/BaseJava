@@ -3,8 +3,7 @@ package io.github.sng78.webapp.storage;
 import io.github.sng78.webapp.exception.StorageException;
 import io.github.sng78.webapp.model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,7 +25,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void updateResume(Resume resume, File file) {
         try {
-            writeResume(resume, file);
+            writeResume(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error ", file.getName() + " ", e);
         }
@@ -38,7 +37,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             if (!file.createNewFile()) {
                 throw new StorageException("File already exists: ", file.getName());
             } else {
-                writeResume(resume, file);
+                updateResume(resume, file);
             }
         } catch (IOException e) {
             throw new StorageException("IO error ", file.getName() + " ", e);
@@ -48,7 +47,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Resume getResume(File file) {
         try {
-            return readResume(file);
+            return readResume(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error ", file.getName() + " ", e);
         }
@@ -101,7 +100,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return files;
     }
 
-    protected abstract Resume readResume(File file) throws IOException;
+    protected abstract void writeResume(Resume resume, OutputStream os) throws IOException;
 
-    protected abstract void writeResume(Resume resume, File file) throws IOException;
+    protected abstract Resume readResume(InputStream is) throws IOException;
 }

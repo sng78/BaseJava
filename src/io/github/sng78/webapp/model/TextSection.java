@@ -3,6 +3,7 @@ package io.github.sng78.webapp.model;
 import java.util.Objects;
 
 public class TextSection extends Section {
+    private static final long serialVersionUID = 1L;
     private final String value;
 
     public TextSection(String value) {

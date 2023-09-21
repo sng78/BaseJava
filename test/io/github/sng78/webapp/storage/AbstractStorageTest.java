@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +15,8 @@ import static io.github.sng78.webapp.ResumeTestData.createResume;
 
 public abstract class AbstractStorageTest {
     protected final Storage storage;
+    protected static final File STORAGE_DIR =
+            new File("C:\\Users\\SnG78\\IdeaProjects\\BaseJava\\storage\\");
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1 = createResume(UUID_1, "name1");
     private static final String UUID_2 = "uuid2";
@@ -56,7 +59,7 @@ public abstract class AbstractStorageTest {
     @DisplayName("Тест метода update")
     public void update() {
         storage.update(RESUME_2);
-        Assertions.assertSame(RESUME_2, storage.get(UUID_2));
+        Assertions.assertEquals(RESUME_2, storage.get(UUID_2));
     }
 
     @Test

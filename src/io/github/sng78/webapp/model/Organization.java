@@ -1,8 +1,10 @@
 package io.github.sng78.webapp.model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Organization {
+public class Organization implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final String name;
     private final String website;
     private final List<Period> periods;

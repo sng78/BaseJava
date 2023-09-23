@@ -2,6 +2,7 @@ package io.github.sng78.webapp.storage;
 
 import io.github.sng78.webapp.exception.StorageException;
 import io.github.sng78.webapp.model.Resume;
+import io.github.sng78.webapp.storage.serializer.StreamSerializer;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -12,12 +13,14 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
+    private final StreamSerializer streamSerializer;
 
-    protected AbstractPathStorage(String dir) {
+    protected PathStorage(String dir, StreamSerializer streamSerializer) {
+        Objects.requireNonNull(dir, "Directory must not be null");
         directory = Paths.get(dir);
-        Objects.requireNonNull(directory, "Directory must not be null");
+        this.streamSerializer = streamSerializer;
         if (!Files.isDirectory(directory)) {
             throw new IllegalArgumentException(dir + " is not directory");
         }
@@ -29,7 +32,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected void updateResume(Resume resume, Path path) {
         try {
-            writeResume(resume, new BufferedOutputStream(Files.newOutputStream(path)));
+            streamSerializer.writeResume(resume, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("File save error ", e);
         }
@@ -48,7 +51,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume getResume(Path path) {
         try {
-            return readResume(new BufferedInputStream(Files.newInputStream(path)));
+            return streamSerializer.readResume(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("File read error ", e);
         }
@@ -95,8 +98,4 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
             throw new StorageException("Directory read error", e);
         }
     }
-
-    protected abstract void writeResume(Resume resume, OutputStream os) throws IOException;
-
-    protected abstract Resume readResume(InputStream is) throws IOException;
 }

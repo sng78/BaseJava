@@ -3,9 +3,6 @@ package io.github.sng78.webapp;
 import io.github.sng78.webapp.model.Resume;
 import io.github.sng78.webapp.storage.ArrayStorage;
 
-/**
- * Test for your io.gitHub.sng78.webapp.storage.ArrayStorage implementation
- */
 public class MainTestArrayStorage {
     public static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 

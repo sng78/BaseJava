@@ -39,12 +39,11 @@ public class FileStorage extends AbstractStorage<File> {
         try {
             if (!file.createNewFile()) {
                 throw new StorageException("File create error");
-            } else {
-                updateResume(resume, file);
             }
         } catch (IOException e) {
             throw new StorageException("IO error ", e);
         }
+        updateResume(resume, file);
     }
 
     @Override

@@ -8,13 +8,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/**
- * Interactive test for io.gitHub.sng78.webapp.storage.ArrayStorage implementation
- * (just run, no need to understand)
- */
 public class MainArray {
     public static final Storage ARRAY_STORAGE = new ArrayStorage();
-//    public static final Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

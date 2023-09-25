@@ -16,7 +16,7 @@ import static io.github.sng78.webapp.ResumeTestData.createResume;
 public abstract class AbstractStorageTest {
     protected final Storage storage;
     protected static final File STORAGE_DIR =
-            new File("C:\\Users\\SnG78\\IdeaProjects\\BaseJava\\storage\\");
+            new File("C:\\Users\\SnG78\\IdeaProjects\\BaseJava\\resumes\\");
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1 = createResume(UUID_1, "name1");
     private static final String UUID_2 = "uuid2";

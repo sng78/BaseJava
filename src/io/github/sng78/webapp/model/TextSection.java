@@ -4,7 +4,10 @@ import java.util.Objects;
 
 public class TextSection extends Section {
     private static final long serialVersionUID = 1L;
-    private final String value;
+    private String value;
+
+    public TextSection() {
+    }
 
     public TextSection(String value) {
         this.value = value;

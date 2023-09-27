@@ -5,7 +5,10 @@ import java.util.Objects;
 
 public class OrganizationSection extends Section {
     private static final long serialVersionUID = 1L;
-    private final List<Organization> items;
+    private List<Organization> items;
+
+    public OrganizationSection() {
+    }
 
     public OrganizationSection(List<Organization> items) {
         this.items = items;

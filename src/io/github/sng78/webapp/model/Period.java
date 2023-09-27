@@ -1,15 +1,26 @@
 package io.github.sng78.webapp.model;
 
+import io.github.sng78.webapp.utils.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Period implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
-    private final String position;
-    private final String description;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate startDate;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate endDate;
+    private String position;
+    private String description;
+
+    public Period() {
+    }
 
     public Period(LocalDate startDate, LocalDate endDate, String position, String description) {
         this.startDate = startDate;

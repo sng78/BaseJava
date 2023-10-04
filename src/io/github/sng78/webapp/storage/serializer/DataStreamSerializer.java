@@ -45,6 +45,7 @@ public class DataStreamSerializer implements StreamSerializer {
 
     private static void saveSections(Resume resume, DataOutputStream dos) throws IOException {
         Map<SectionType, Section> sections = resume.getSections();
+        dos.writeInt(sections.size());
         for (Map.Entry<SectionType, Section> section : sections.entrySet()) {
             dos.writeUTF(section.getKey().name());
             switch (section.getKey()) {
@@ -87,39 +88,46 @@ public class DataStreamSerializer implements StreamSerializer {
     }
 
     private static void loadSections(Resume resume, DataInputStream dis) throws IOException {
+        int numberSections = dis.readInt();
         SectionType sectionType;
         List<Organization> organizations = new ArrayList<>();
-        do {
+        for (int i = 0; i < numberSections; i++) {
             sectionType = SectionType.valueOf(dis.readUTF());
             switch (sectionType) {
                 case OBJECTIVE:
                 case PERSONAL:
-                    resume.setSection(sectionType, new TextSection(dis.readUTF()));
+                    String text = dis.readUTF();
+                    resume.setSection(sectionType, new TextSection(text));
                     break;
                 case ACHIEVEMENT:
                 case SKILLS:
                     List<String> skills = new ArrayList<>();
-                    for (int i = 0; i < dis.readInt(); i++) {
-                        skills.add(dis.readUTF());
+                    int numberSkills = dis.readInt();
+                    for (int j = 0; j < numberSkills; j++) {
+                        String skill = dis.readUTF();
+                        skills.add(skill);
                     }
                     resume.setSection(sectionType, new ListSection(skills));
                     break;
-                default:
-                    for (int i = 0; i < dis.readInt(); i++) {
+                case EXPERIENCE:
+                case EDUCATION:
+                    int numberOrganizations = dis.readInt();
+                    for (int j = 0; j < numberOrganizations; j++) {
                         String organization = dis.readUTF();
                         String website = dis.readUTF();
-                        Period[] periods = new Period[dis.readInt()];
-                        for (int j = 0; j < periods.length; j++) {
+                        int numberPeriods = dis.readInt();
+                        Period[] periods = new Period[numberPeriods];
+                        for (int k = 0; k < periods.length; k++) {
                             LocalDate startDate = LocalDate.parse(dis.readUTF());
                             LocalDate endDate = LocalDate.parse(dis.readUTF());
                             String position = dis.readUTF();
                             String description = dis.readUTF();
-                            periods[j] = new Period(startDate, endDate, position, description);
+                            periods[k] = new Period(startDate, endDate, position, description);
                         }
                         organizations.add(new Organization(organization, website, periods));
                     }
                     resume.setSection(sectionType, new OrganizationSection(organizations));
             }
-        } while (sectionType != SectionType.EDUCATION);
+        }
     }
 }

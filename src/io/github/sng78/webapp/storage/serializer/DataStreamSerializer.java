@@ -90,7 +90,6 @@ public class DataStreamSerializer implements StreamSerializer {
     private static void loadSections(Resume resume, DataInputStream dis) throws IOException {
         int numberSections = dis.readInt();
         SectionType sectionType;
-        List<Organization> organizations = new ArrayList<>();
         for (int i = 0; i < numberSections; i++) {
             sectionType = SectionType.valueOf(dis.readUTF());
             switch (sectionType) {
@@ -111,6 +110,7 @@ public class DataStreamSerializer implements StreamSerializer {
                     break;
                 case EXPERIENCE:
                 case EDUCATION:
+                    List<Organization> organizations = new ArrayList<>();
                     int numberOrganizations = dis.readInt();
                     for (int j = 0; j < numberOrganizations; j++) {
                         String organization = dis.readUTF();

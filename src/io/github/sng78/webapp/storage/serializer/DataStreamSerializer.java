@@ -5,6 +5,7 @@ import io.github.sng78.webapp.model.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +16,38 @@ public class DataStreamSerializer implements StreamSerializer {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
 
-            saveContacts(resume, dos);
-            saveSections(resume, dos);
+            Map<ContactType, String> contacts = resume.getContacts();
+            writeWithException(dos, contacts.entrySet(), entry -> {
+                dos.writeUTF(entry.getKey().name());
+                dos.writeUTF(entry.getValue());
+            });
+
+            writeWithException(dos, resume.getSections().entrySet(), entry -> {
+                SectionType sectionType = entry.getKey();
+                Section section = entry.getValue();
+                dos.writeUTF(sectionType.name());
+                switch (sectionType) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        dos.writeUTF(section.toString());
+                        break;
+                    case ACHIEVEMENT:
+                    case SKILLS:
+                        writeWithException(dos, ((ListSection) section).getItems(), dos::writeUTF);
+                        break;
+                    default:
+                        writeWithException(dos, ((OrganizationSection) section).getItems(), organization -> {
+                            dos.writeUTF(organization.getName());
+                            dos.writeUTF(organization.getWebsite());
+                            writeWithException(dos, organization.getPeriods(), period -> {
+                                dos.writeUTF(String.valueOf(period.getStartDate()));
+                                dos.writeUTF(String.valueOf(period.getEndDate()));
+                                dos.writeUTF(period.getPosition());
+                                dos.writeUTF(period.getDescription());
+                            });
+                        });
+                }
+            });
         }
     }
 
@@ -31,52 +62,6 @@ public class DataStreamSerializer implements StreamSerializer {
             loadSections(resume, dis);
 
             return resume;
-        }
-    }
-
-    private static void saveContacts(Resume resume, DataOutputStream dos) throws IOException {
-        Map<ContactType, String> contacts = resume.getContacts();
-        dos.writeInt(contacts.size());
-        for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-            dos.writeUTF(entry.getKey().name());
-            dos.writeUTF(entry.getValue());
-        }
-    }
-
-    private static void saveSections(Resume resume, DataOutputStream dos) throws IOException {
-        Map<SectionType, Section> sections = resume.getSections();
-        dos.writeInt(sections.size());
-        for (Map.Entry<SectionType, Section> section : sections.entrySet()) {
-            dos.writeUTF(section.getKey().name());
-            switch (section.getKey()) {
-                case OBJECTIVE:
-                case PERSONAL:
-                    dos.writeUTF(section.getValue().toString());
-                    break;
-                case ACHIEVEMENT:
-                case SKILLS:
-                    ListSection listItems = (ListSection) section.getValue();
-                    dos.writeInt(listItems.getItems().size());
-                    for (String item : listItems.getItems()) {
-                        dos.writeUTF(item);
-                    }
-                    break;
-                default:
-                    OrganizationSection listOrganizations = (OrganizationSection) section.getValue();
-                    dos.writeInt(listOrganizations.getItems().size());
-                    for (Organization organization : listOrganizations.getItems()) {
-                        dos.writeUTF(organization.getName());
-                        dos.writeUTF(organization.getWebsite());
-                        List<Period> periods = organization.getPeriods();
-                        dos.writeInt(periods.size());
-                        for (Period period : periods) {
-                            dos.writeUTF(String.valueOf(period.getStartDate()));
-                            dos.writeUTF(String.valueOf(period.getEndDate()));
-                            dos.writeUTF(period.getPosition());
-                            dos.writeUTF(period.getDescription());
-                        }
-                    }
-            }
         }
     }
 
@@ -129,5 +114,17 @@ public class DataStreamSerializer implements StreamSerializer {
                     resume.setSection(sectionType, new OrganizationSection(organizations));
             }
         }
+    }
+
+    private <T> void writeWithException(DataOutputStream dos, Collection<T> collection, DataWriter<T> writer)
+            throws IOException {
+        dos.writeInt(collection.size());
+        for (T item : collection) {
+            writer.write(item);
+        }
+    }
+
+    private interface DataWriter<T> {
+        void write(T t) throws IOException;
     }
 }

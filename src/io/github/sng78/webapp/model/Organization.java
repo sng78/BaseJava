@@ -22,6 +22,12 @@ public class Organization implements Serializable {
         Collections.addAll(periods, period);
     }
 
+    public Organization(String name, String website, List<Period> periods) {
+        this.name = name;
+        this.website = website;
+        this.periods = periods;
+    }
+
     public String getName() {
         return name;
     }

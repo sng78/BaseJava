@@ -1,4 +1,4 @@
-package io.github.sng78.webapp;
+package io.github.sng78.tasks;
 
 public class DeadLock {
     private static final String A = "A";

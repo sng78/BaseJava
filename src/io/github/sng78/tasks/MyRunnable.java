@@ -1,4 +1,4 @@
-package io.github.sng78.webapp;
+package io.github.sng78.tasks;
 
 public class MyRunnable implements Runnable {
     private final String A;

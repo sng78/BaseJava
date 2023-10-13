@@ -1,4 +1,4 @@
-package io.github.sng78.webapp;
+package io.github.sng78.tasks;
 
 import io.github.sng78.webapp.model.Resume;
 

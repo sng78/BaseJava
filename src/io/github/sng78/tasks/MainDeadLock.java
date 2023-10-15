@@ -1,6 +1,6 @@
 package io.github.sng78.tasks;
 
-public class DeadLock {
+public class MainDeadLock {
     private static final String A = "A";
     private static final String B = "B";
 

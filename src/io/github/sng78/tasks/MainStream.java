@@ -1,12 +1,15 @@
 package io.github.sng78.tasks;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.partitioningBy;
+import static java.util.stream.Collectors.toList;
 
 public class MainStream {
     public static void main(String[] args) {
-        System.out.println(minValue(new int[]{1, 5, 2, 3, 3}));
-        System.out.println();
+        int[] digits = {1, 5, 2, 3, 8, 3};
+        System.out.println(Arrays.toString(digits) + "\n" +
+                minValue(digits) + "\n");
 
         List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 8, 4, 6));
         System.out.println(oddOrEven(list) + "\n");
@@ -15,22 +18,16 @@ public class MainStream {
         System.out.println(oddOrEven(list) + "\n");
     }
 
-    public static int minValue(int[] values) {
-        return Integer.parseInt(
-                Arrays.stream(values)
-                        .distinct()
-                        .sorted()
-                        .mapToObj(String::valueOf)
-                        .collect(Collectors.joining("")));
+    public static int minValue(int[] digits) {
+        return Arrays.stream(digits)
+                .distinct()
+                .sorted()
+                .reduce(0, (acc, number) -> acc * 10 + number);
     }
 
     public static List<Integer> oddOrEven(List<Integer> integers) {
-        int integersSum = integers.stream()
-                .mapToInt(Integer::intValue)
-                .sum();
-        return integers.stream()
-                .filter(number ->
-                        (integersSum % 2 == 0) == (number % 2 != 0))
-                .collect(Collectors.toList());
+        Map<Boolean, List<Integer>> map = integers.stream()
+                .collect(partitioningBy(number -> number % 2 == 0, toList()));
+        return map.get(map.get(false).size() % 2 != 0);
     }
 }

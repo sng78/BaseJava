@@ -11,19 +11,20 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static io.github.sng78.webapp.ResumeTestData.createResume;
 
 public abstract class AbstractStorageTest {
     protected final Storage storage;
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
-    private static final String UUID_1 = "uuid1";
+    private static final String UUID_1 = UUID.randomUUID().toString();
     private static final Resume RESUME_1 = createResume(UUID_1, "name1");
-    private static final String UUID_2 = "uuid2";
+    private static final String UUID_2 = UUID.randomUUID().toString();
     private static final Resume RESUME_2 = createResume(UUID_2, "name2");
-    private static final String UUID_3 = "uuid3";
+    private static final String UUID_3 = UUID.randomUUID().toString();
     private static final Resume RESUME_3 = createResume(UUID_3, "name3");
-    private static final String UUID_4 = "uuid4";
+    private static final String UUID_4 = UUID.randomUUID().toString();
     private static final Resume RESUME_4 = createResume(UUID_4, "name4");
     private static final String UUID_NOT_EXIST = "dummy";
 

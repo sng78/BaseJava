@@ -2,6 +2,7 @@ package io.github.sng78.webapp.storage;
 
 import io.github.sng78.webapp.Config;
 import io.github.sng78.webapp.exception.NotExistStorageException;
+import io.github.sng78.webapp.model.ContactType;
 import io.github.sng78.webapp.model.Resume;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -59,8 +61,10 @@ public abstract class AbstractStorageTest {
     @Test
     @DisplayName("Тест метода update")
     public void update() {
-        storage.update(RESUME_2);
-        Assertions.assertEquals(RESUME_2, storage.get(UUID_2));
+        Resume resume = new Resume(UUID_1, "New name");
+        resume.setContact(ContactType.PHONE, "52145656");
+        storage.update(resume);
+        Assertions.assertEquals(resume, storage.get(UUID_1));
     }
 
     @Test
@@ -109,7 +113,9 @@ public abstract class AbstractStorageTest {
     @DisplayName("Тест метода getAllSorted")
     public void getAllSorted() {
         List<Resume> expected = storage.getAllSorted();
-        Assertions.assertEquals(expected, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
+        List<Resume> actual = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        Collections.sort(actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test

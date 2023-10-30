@@ -87,17 +87,15 @@ public class SqlStorage implements Storage {
     @Override
     public void delete(String uuid) {
         LOG.info("Delete " + uuid);
-        sqlHelper.transactionalExecute(connection -> {
-            try (PreparedStatement ps = connection.prepareStatement(
-                    "DELETE FROM resume" +
-                        " WHERE uuid = ?")) {
-                ps.setString(1, uuid);
-                if (ps.executeUpdate() == 0) {
-                    throw new NotExistStorageException(uuid);
-                }
-            }
-            return null;
-        });
+        sqlHelper.execute(
+                "DELETE FROM resume" +
+                    " WHERE uuid = ?", ps -> {
+                    ps.setString(1, uuid);
+                    if (ps.executeUpdate() == 0) {
+                        throw new NotExistStorageException(uuid);
+                    }
+                    return null;
+                });
     }
 
     @Override
@@ -135,17 +133,17 @@ public class SqlStorage implements Storage {
                 });
     }
 
-    public void deleteContacts(Resume r) {
+    private void deleteContacts(Resume r) {
         sqlHelper.execute(
-                "DELETE FROM contact c" +
-                    " WHERE c.resume_uuid = ?", ps -> {
+                "DELETE FROM contact" +
+                    " WHERE resume_uuid = ?", ps -> {
                     ps.setString(1, r.getUuid());
                     ps.execute();
                     return null;
                 });
     }
 
-    public void insertContacts(Connection connection, Resume r) throws SQLException {
+    private void insertContacts(Connection connection, Resume r) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(
                 "INSERT INTO contact (resume_uuid, type, value) " +
                     "VALUES (?, ?, ?)")) {
@@ -159,7 +157,7 @@ public class SqlStorage implements Storage {
         }
     }
 
-    public void addContact(ResultSet rs, Resume r) throws SQLException {
+    private void addContact(ResultSet rs, Resume r) throws SQLException {
         String value = rs.getString("value");
         ContactType contactType = ContactType.valueOf(rs.getString("type"));
         if (value != null) {

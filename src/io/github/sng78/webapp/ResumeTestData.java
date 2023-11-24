@@ -32,7 +32,7 @@ public class ResumeTestData {
 
     private static void fillContacts(Resume resume) {
         resume.setContact(ContactType.PHONE, "+7(921)855-04-82");
-        resume.setContact(ContactType.SKYPE, "skype:grigory.kislin");
+        resume.setContact(ContactType.SKYPE, "grigory.kislin");
         resume.setContact(ContactType.EMAIL, "gkislin@yandex.ru");
         resume.setContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
         resume.setContact(ContactType.GITHUB, "https://github.com/gkislin");
@@ -171,7 +171,7 @@ public class ResumeTestData {
         List<Organization> workOrganizations = new ArrayList<>();
         workOrganizations.add(new Organization("Java Online Projects", "http://javaops.ru/", period1));
         workOrganizations.add(new Organization("Wrike", "https://www.wrike.com/", period2));
-        workOrganizations.add(new Organization("RIT Center", "none website", period3));
+        workOrganizations.add(new Organization("RIT Center", "", period3));
         workOrganizations.add(new Organization("Luxoft (Deutsche Bank)", "http://www.luxoft.ru/",
                 period4));
         workOrganizations.add(new Organization("Yota", "https://www.yota.ru/", period5));

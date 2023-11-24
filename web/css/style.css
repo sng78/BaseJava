@@ -1,7 +1,10 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
 header {
     background: none repeat scroll 0 0 #A6C9E2;
     color: #2E6E9E;
-    font-size: 12px;
     padding: 5px 20px;
     margin: 20px 0;
     text-align: center;
@@ -10,12 +13,47 @@ header {
 footer {
     background: none repeat scroll 0 0 #A6C9E2;
     color: #2E6E9E;
-    font-size: 12px;
     padding: 5px 20px;
     margin: 20px 0;
     text-align: center;
 }
 
-body {
-    font-family: 'Roboto Condensed', sans-serif;
+dl {
+    background: none repeat scroll 0 0 #FAFAFA;
+    margin: 8px 0;
+    padding: 0;
+}
+
+dt {
+    display: inline-block;
+    width: 170px;
+}
+
+dd {
+    display: inline-block;
+    margin-left: 8px;
+    vertical-align: top;
+}
+
+
+table {
+    border-collapse: collapse;
+    border: 2px solid #2E6E9E;
+    width: 60%;
+    margin: auto;
+    text-align: center;
+}
+
+#hidden-table {
+    border-collapse: collapse;
+    border-style: hidden;
+    width: 60%;
+    margin: auto;
+    text-align: center;
+}
+
+th,
+td {
+    border: 2px solid #2E6E9E;
+    padding: 8px;
 }

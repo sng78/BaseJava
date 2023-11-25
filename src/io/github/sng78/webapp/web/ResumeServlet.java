@@ -102,7 +102,7 @@ public class ResumeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
@@ -174,6 +174,11 @@ public class ResumeServlet extends HttpServlet {
         } else {
             storage.update(r);
         }
+
+        if (isEmpty(r.getFullName())) {
+            storage.delete(r.getUuid());
+        }
+
         response.sendRedirect("resume");
     }
 

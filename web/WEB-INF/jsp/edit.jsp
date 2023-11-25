@@ -14,7 +14,7 @@
 <section>
     <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
         <button type="submit">Сохранить</button>
-        <button onclick="window.history.back()">Отмена</button>
+        <button type="button" onclick="window.history.back()">Отмена</button>
         <hr>
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
@@ -47,7 +47,7 @@
                     <c:forEach var="organization" items="<%=((OrganizationSection) section).getItems()%>"
                                varStatus="counter">
                         <dl>
-                            <dt><b>Организация / сайт</b></dt>
+                            <dt>Организация / сайт</dt>
                             <dd>
                                 <input type="text" name="${type}" size=31 value="${organization.name}">
                             </dd>
@@ -96,7 +96,7 @@
         </c:forEach>
         <hr>
         <button type="submit">Сохранить</button>
-        <button onclick="window.history.back()">Отмена</button>
+        <button type="button" onclick="window.history.back()">Отмена</button>
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

@@ -138,7 +138,13 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case ACHIEVEMENT:
                     case SKILLS:
-                        r.setSection(type, new ListSection(value.split("\\n")));
+                        List<String> list = new ArrayList<>();
+                        for (String string : value.split("\\n")) {
+                            if (!isEmpty(string)) {
+                                list.add(string);
+                            }
+                        }
+                        r.setSection(type, new ListSection(list));
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
@@ -174,11 +180,6 @@ public class ResumeServlet extends HttpServlet {
         } else {
             storage.update(r);
         }
-
-        if (isEmpty(r.getFullName())) {
-            storage.delete(r.getUuid());
-        }
-
         response.sendRedirect("resume");
     }
 

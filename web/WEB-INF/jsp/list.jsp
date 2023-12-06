@@ -1,4 +1,5 @@
 <%@ page import="io.github.sng78.webapp.model.ContactType" %>
+<%@ page import="io.github.sng78.webapp.Config" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
@@ -40,9 +41,20 @@
                             ContactType.EMAIL.toHtml(resume.getContact(ContactType.EMAIL)).substring(7) : ""
                     %>
                 </td>
-                <td><a href="resume?uuid=${resume.uuid}&action=delete">
-                    <button><img src="img/delete.png" alt="" style="vertical-align:middle"> Удалить</button>
-                </a></td>
+                <td>
+                    <a href="resume?uuid=${resume.uuid}&action=delete">
+                        <c:set var="notEditUuid" value="<%=Config.get().getProtectedUuid()%>"/>
+                        <jsp:useBean id="notEditUuid" type="java.lang.String"/>
+                        <c:choose>
+                            <c:when test="<%=resume.getUuid().equals(notEditUuid)%>">
+                                <button disabled><img src="img/delete.png" alt="" style="vertical-align:middle"> Удалить</button>
+                            </c:when>
+                            <c:otherwise>
+                                <button><img src="img/delete.png" alt="" style="vertical-align:middle"> Удалить</button>
+                            </c:otherwise>
+                        </c:choose>
+                    </a>
+                </td>
                 <td><a href="resume?uuid=${resume.uuid}&action=edit">
                     <button><img src="img/pencil.png" alt="" style="vertical-align:middle"> Редактировать</button>
                 </a></td>

@@ -1,5 +1,7 @@
 <%@ page import="io.github.sng78.webapp.utils.DateUtil" %>
 <%@ page import="io.github.sng78.webapp.model.*" %>
+<%@ page import="io.github.sng78.webapp.Config" %>
+<%@ page import="java.util.Objects" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
@@ -13,8 +15,18 @@
 <jsp:include page="fragments/header.jsp"/>
 <section>
     <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
-        <button type="submit">Сохранить</button>
+        <c:set var="notEditUuid" value="<%=Config.get().getProtectedUuid()%>"/>
+        <jsp:useBean id="notEditUuid" type="java.lang.String"/>
+        <c:choose>
+            <c:when test="<%=Objects.equals(resume.getUuid(), notEditUuid)%>">
+                <button type="submit" disabled>Сохранить</button>
+            </c:when>
+            <c:otherwise>
+                <button type="submit">Сохранить</button>
+            </c:otherwise>
+        </c:choose>
         <button type="button" onclick="window.history.back()">Отмена</button>
+
         <hr>
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
@@ -95,8 +107,17 @@
             </c:choose>
         </c:forEach>
         <hr>
-        <button type="submit">Сохранить</button>
+
+        <c:choose>
+            <c:when test="<%=Objects.equals(resume.getUuid(), notEditUuid)%>">
+                <button type="submit" disabled>Сохранить</button>
+            </c:when>
+            <c:otherwise>
+                <button type="submit">Сохранить</button>
+            </c:otherwise>
+        </c:choose>
         <button type="button" onclick="window.history.back()">Отмена</button>
+
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

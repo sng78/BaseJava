@@ -12,6 +12,7 @@ public class Config {
     private static final Config INSTANCE = new Config();
     private final File storageDir;
     private final Storage storage;
+    private final String protectedUuid;
 
     public static Config get() {
         return INSTANCE;
@@ -25,6 +26,7 @@ public class Config {
             storage = new SqlStorage(properties.getProperty("db.url"),
                     properties.getProperty("db.user"),
                     properties.getProperty("db.password"));
+            protectedUuid = properties.getProperty("protected.uuid");
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file " + PROPERTIES.getAbsolutePath());
         }
@@ -36,5 +38,9 @@ public class Config {
 
     public Storage getStorage() {
         return storage;
+    }
+
+    public String getProtectedUuid() {
+        return protectedUuid;
     }
 }

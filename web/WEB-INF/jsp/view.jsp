@@ -60,10 +60,10 @@
                     <c:forEach var="item" items="<%=((OrganizationSection) section).getItems()%>">
                         <c:choose>
                             <c:when test="${empty item.website}">
-                                ${item.name}
+                                <b>${item.name}</b>
                             </c:when>
                             <c:otherwise>
-                                <a href="${item.website}" target="_blank">${item.name}</a>
+                                <a href="${item.website}" target="_blank"><b>${item.name}</b></a>
                             </c:otherwise>
                         </c:choose>
                         <br>

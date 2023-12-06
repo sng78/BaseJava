@@ -10,8 +10,10 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
@@ -23,11 +25,13 @@ public class ResumeServlet extends HttpServlet {
 
         //test data
         storage.clear();
-        Resume resume1 = ResumeTestData.createResume(UUID.randomUUID().toString(), "Григорий Кислин");
-        Resume resume2 = new Resume("uuid2", "name2");
-        Resume resume3 = new Resume("uuid3", "name3");
-        resume3.setContact(ContactType.EMAIL, "name3@email.com");
-        resume3.setContact(ContactType.PHONE, "555-55-55");
+        String uuid1 = Config.get().getProtectedUuid();
+        String fullName1 = "Сергей Горбачев";
+        Resume resume1 = ResumeTestData.createResume(uuid1, fullName1);
+        Resume resume2 = new Resume(UUID.randomUUID().toString(), "Василий Петров");
+        Resume resume3 = new Resume(UUID.randomUUID().toString(), "Николай Носов");
+        resume3.setContact(ContactType.EMAIL, "nosov@email.com");
+        resume3.setContact(ContactType.PHONE, "+0(000)555-55-55");
         storage.save(resume1);
         storage.save(resume2);
         storage.save(resume3);
@@ -138,12 +142,10 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case ACHIEVEMENT:
                     case SKILLS:
-                        List<String> list = new ArrayList<>();
-                        for (String string : value.split("\\n")) {
-                            if (!isEmpty(string)) {
-                                list.add(string);
-                            }
-                        }
+                        List<String> list = Arrays
+                                .stream(value.split("\\n"))
+                                .filter(string -> !isEmpty(string))
+                                .collect(Collectors.toList());
                         r.setSection(type, new ListSection(list));
                         break;
                     case EDUCATION:

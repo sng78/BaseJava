@@ -4,7 +4,7 @@
 - Написать программу для составления, редактирования и хранения резюме в БД.
 
 ***Используемые технологии:***
-- Java JDK 11, Collections, Git, Github, IntelliJ IDEA, Maven, JUnit, Logging, GSON, JAXB, SQL, PostgreSQL, Сервлеты, HTML, JSP, JSTL, Tomcat
+- Java, Postgres, Tomcat, Servlets, GSON, JAXB (XML), JUnit, Maven, JSP, JSTL, HTML, CSS, IntelliJ IDEA, Git
 
 ***Результаты:***
 - Использованы различные способы реализации хранения резюме
@@ -17,5 +17,5 @@
         - В формате XML (JAXB)
     - В реляционной базе PostgreSQL
 - Деплой web-приложения на собственный выделенный сервер
-      
-  http://86.110.194.123/resumes/resume
+
+http://86.110.194.123/resumes/resume
